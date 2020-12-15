@@ -38,20 +38,19 @@
           </div>
 
           <script>
-            $.get("http://localhost/data",function(data){
+            $.get("http://192.168.1.133/data",function(data){
               console.log(data);
-            })
-
-            
+              obj = JSON.parse(data);
+      
             let cardContainer = document.getElementById("cardDeck");
 
-            for(var i=0; i<10; i++){
+            for(var i=0; i<obj.length; i++){
               let card = document.createElement('div');
               card.className = "card mb-3 h-100";
 
               let cardHeader = document.createElement('div');
               cardHeader.className = "card-header";
-              cardHeader.innerText = "Weather station: " + i;
+              cardHeader.innerText = "Weather station: " + obj[i][0].location;
               card.appendChild(cardHeader);
 
               let infoList = document.createElement('ul');
@@ -59,23 +58,29 @@
 
               let itemTemperature = document.createElement('li');
               itemTemperature.className = 'list-group-item';
-              itemTemperature.innerText = 'Temperature: ';
+              itemTemperature.innerText = 'Temperature: '+ obj[i].temperature;
               infoList.appendChild(itemTemperature);
 
               let itemLight = document.createElement('li');
               itemLight.className = 'list-group-item';
-              itemLight.innerText = 'Light: ';
+              itemLight.innerText = 'Light: ' + obj[i].ambient_light;
               infoList.appendChild(itemLight);
               
               let itemPressure = document.createElement('li');
               itemPressure.className = 'list-group-item';
-              itemPressure.innerText = 'Pressure: ';
+              itemPressure.innerText = 'Pressure: ' + obj[i].barometric_pressure;
               infoList.appendChild(itemPressure);
+
+              let itemTime = document.createElement('li');
+              itemTime.className = 'list-group-item';
+              itemTime.innerText = 'Time: ' + obj[i].time;
+              infoList.appendChild(itemTime);
 
               card.appendChild(infoList);
               cardContainer.appendChild(card);
-
             }
+          })
+            
 
           </script>
 
