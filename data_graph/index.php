@@ -6,14 +6,16 @@
    $stations = $db-> query('select  * from Weather_station');
     while ($row = $stations->fetchArray(1)){
 
-        $statement = $db->prepare('SELECT * FROM Readings WHERE node_id = :id order by time desc limit 1');
+        $statement = $db->prepare('SELECT temperature, ambient_light, barometric_pressure, time FROM Readings WHERE node_id = :id order by time desc limit 10');
         $statement->bindValue(':id', $row['node_id']);
-        $result = $statement->execute();
+        $station = $statement->execute();
 
-        while ($data = $result->fetchArray(1)){
-        	array_push($data, array('location' => $row['location']));
-           $jsonArray[] = $data;
+        $data = array();
+        while ($result = $station->fetchArray(1)){
+            $data[] =  $result;
         }
+        $row[] = $data;
+        $jsonArray[] = $row;
     }
     echo json_encode($jsonArray);
 
