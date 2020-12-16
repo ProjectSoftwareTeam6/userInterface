@@ -43,10 +43,10 @@
             </nav>
               <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-temperature">
-                  <canvas id="chartTemperature" height="120vh"></canvas>
+                  <canvas id="chartTemperature" height="200vh"></canvas>
                 </div>
-                <div class="tab-pane fade" id="nav-light"><canvas id="chartLight" height="120vh"></canvas></div>
-                <div class="tab-pane fade" id="nav-pressure" ><canvas id="chartPressure" height="120vh"></canvas></div>
+                <div class="tab-pane fade" id="nav-light"><canvas id="chartLight" height="200vh"></canvas></div>
+                <div class="tab-pane fade" id="nav-pressure" ><canvas id="chartPressure" height="200vh"></canvas></div>
               </div>
             </div>
 
@@ -153,17 +153,17 @@
                 for(let j = 0; j < data[i][0].length; j++){
 
                   configTemperature.data.datasets[i].data.push({
-                      x: data[i][0][j].time,
+                      x: moment(data[i][0][j].time, "YYY-MM-DD hh:mm:ss"),
                       y: data[i][0][j].temperature
                     });
 
                     configLight.data.datasets[i].data.push({
-                      x: data[i][0][j].time,
+                      x: moment(data[i][0][j].time, "YYY-MM-DD hh:mm:ss"),
                       y: data[i][0][j].ambient_light
                     });
 
                     configPressure.data.datasets[i].data.push({
-                      x: data[i][0][j].time,
+                      x: moment(data[i][0][j].time, "YYY-MM-DD hh:mm:ss"),
                       y: data[i][0][j].barometric_pressure
                     });
 
