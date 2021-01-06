@@ -45,9 +45,18 @@
                 <div class="tab-pane fade show active" id="nav-temperature">
                   <canvas id="chartTemperature" height="200vh"></canvas>
                 </div>
-                <div class="tab-pane fade" id="nav-light"><canvas id="chartLight" height="200vh"></canvas></div>
-                <div class="tab-pane fade" id="nav-pressure" ><canvas id="chartPressure" height="200vh"></canvas></div>
+                <div class="tab-pane fade" id="nav-light">
+                  <canvas id="chartLight" height="200vh"></canvas>
+                </div>
+                <div class="tab-pane fade" id="nav-pressure" >
+                  <canvas id="chartPressure" height="200vh"></canvas>
+                </div>
               </div>
+
+              <button id="buttonHour">Hour</button>
+              <button id="buttonDay">Day</button>
+              <button id="buttonWeek">Week</button>
+  
             </div>
 
             <script>
@@ -84,16 +93,16 @@
                 }
               };
               var configTemperature = JSON.parse(JSON.stringify(config));
-              configTemperature.options.title.text = 'Temperature';
-              configTemperature.options.scales.yAxes[0].scaleLabel.labelString = 'Temperature';
+              configTemperature.options.title.text = 'Temperature (' + String.fromCharCode(8451) + ')' ;
+              configTemperature.options.scales.yAxes[0].scaleLabel.labelString = 'Temperature (' + String.fromCharCode(8451) + ')' ;
 
               var configLight = JSON.parse(JSON.stringify(config));
-              configLight.options.title.text = 'Light';
-              configLight.options.scales.yAxes[0].scaleLabel.labelString = 'Light';
+              configLight.options.title.text = 'Light (lx)';
+              configLight.options.scales.yAxes[0].scaleLabel.labelString = 'Light (lx)';
 
               var configPressure = JSON.parse(JSON.stringify(config));
-              configPressure.options.title.text = 'Pressure';
-              configPressure.options.scales.yAxes[0].scaleLabel.labelString = 'Pressure';
+              configPressure.options.title.text = 'Pressure (Pa)';
+              configPressure.options.scales.yAxes[0].scaleLabel.labelString = 'Pressure (Pa)';
 
               window.onload = function() {
                 var ctxTemperature = document.getElementById('chartTemperature').getContext('2d');
@@ -115,8 +124,54 @@
               'rgb(201, 203, 207)'];
 
               $.get("http://192.168.1.133/data_graph",function(dataJSON){
-                console.log(dataJSON);
-                data = JSON.parse(dataJSON);
+                let data = JSON.parse(dataJSON);
+                console.log(data);
+                updateData(data);
+              });
+
+              buttonDay = document.getElementById('buttonDay');
+              buttonDay.onclick = function(){
+                 $.get("http://192.168.1.133/data_graph_day",function(dataJSON){
+                   
+                configTemperature.data.datasets = [];
+                configLight.data.datasets = [];
+                configPressure.data.datasets = [];
+                  let data = JSON.parse(dataJSON);
+                  console.log(data);
+                  updateData(data);
+                  console.log(configTemperature);
+                });
+              };
+
+              buttonHour = document.getElementById('buttonHour');
+              buttonHour.onclick = function(){
+                 $.get("http://192.168.1.133/data_graph_hour",function(dataJSON){
+                   
+                configTemperature.data.datasets = [];
+                configLight.data.datasets = [];
+                configPressure.data.datasets = [];
+                  let data = JSON.parse(dataJSON);
+                  console.log(data);
+                  updateData(data);
+                  console.log(configTemperature);
+                });
+              };
+
+              buttonWeek = document.getElementById('buttonWeek');
+              buttonWeek.onclick = function(){
+                 $.get("http://192.168.1.133/data_graph_week",function(dataJSON){    
+                configTemperature.data.datasets = [];
+                configLight.data.datasets = [];
+                configPressure.data.datasets = [];
+                  let data = JSON.parse(dataJSON);
+                  console.log(data);
+                  updateData(data);
+                  console.log(configTemperature);
+                });
+              };
+
+
+              function updateData(data){
 
                 for(let i = 0; i<data.length; i++){
 
@@ -127,30 +182,30 @@
                   borderColor: colors[i],
                   fill: false,
                   data: []
-                });
-                window.lineTemperature.update();
+                  });
+                  window.lineTemperature.update();
 
-                configLight.data.datasets.push({
+                  configLight.data.datasets.push({
                   label: data[i].location,
                   cubicInterpolationMode: 'monotone',
                   backgroundColor: color(colors[i]).alpha(0.5).rgbString(),
                   borderColor: colors[i],
                   fill: false,
                   data: []
-                });
-                window.lineLight.update();
+                  });
+                  window.lineLight.update();
 
-                configPressure.data.datasets.push({
+                  configPressure.data.datasets.push({
                   label: data[i].location,
                   cubicInterpolationMode: 'monotone',
                   backgroundColor: color(colors[i]).alpha(0.5).rgbString(),
                   borderColor: colors[i],
                   fill: false,
                   data: []
-                });
-                window.linePressure.update();
+                  });
+                  window.linePressure.update();
 
-                for(let j = 0; j < data[i][0].length; j++){
+                  for(let j = 0; j < data[i][0].length; j++){
 
                   configTemperature.data.datasets[i].data.push({
                       x: moment(data[i][0][j].time, "YYY-MM-DD hh:mm:ss"),
@@ -167,12 +222,14 @@
                       y: data[i][0][j].barometric_pressure
                     });
 
-                  }
+                  } 
+              
+                  window.linePressure.update();
+                  window.lineTemperature.update();
+                  window.lineLight.update();
+                }
+
               }
-              window.linePressure.update();
-              window.lineTemperature.update();
-              window.lineLight.update();
-              });
 
             </script>
     </body>

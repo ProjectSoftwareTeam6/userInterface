@@ -39,8 +39,8 @@
 
           <script>
             $.get("http://192.168.1.133/data",function(data){
-              console.log(data);
               obj = JSON.parse(data);
+            console.log(obj);
       
             let cardContainer = document.getElementById("cardDeck");
    
@@ -62,17 +62,17 @@
 
               let itemTemperature = document.createElement('li');
               itemTemperature.className = 'list-group-item';
-              itemTemperature.innerText = 'Temperature: '+ obj[i].temperature;
+              itemTemperature.innerText = 'Temperature: '+ obj[i].temperature + String.fromCharCode(8451);
               infoList.appendChild(itemTemperature);
 
               let itemLight = document.createElement('li');
               itemLight.className = 'list-group-item';
-              itemLight.innerText = 'Light: ' + obj[i].ambient_light;
+              itemLight.innerText = 'Light: ' + obj[i].ambient_light + ' lx';
               infoList.appendChild(itemLight);
               
               let itemPressure = document.createElement('li');
               itemPressure.className = 'list-group-item';
-              itemPressure.innerText = 'Pressure: ' + obj[i].barometric_pressure;
+              itemPressure.innerText = 'Pressure: ' + obj[i].barometric_pressure  +  ' Pa';
               infoList.appendChild(itemPressure);
 
               let itemTime = document.createElement('li');

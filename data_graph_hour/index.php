@@ -6,7 +6,7 @@
    $stations = $db-> query('select  * from Weather_station');
     while ($row = $stations->fetchArray(1)){
 
-        $statement = $db->prepare('SELECT temperature, ambient_light, barometric_pressure, time FROM Readings WHERE node_id = :id order by time desc limit 10');
+        $statement = $db->prepare("SELECT temperature, ambient_light, barometric_pressure, time FROM Readings where node_id = :id and time >= date('now', '-1 hour') order by time desc");
         $statement->bindValue(':id', $row['node_id']);
         $station = $statement->execute();
 
