@@ -1,6 +1,9 @@
+<!--AUTHOR: Daan Bouwman-->
+
 <!DOCTYPE html>
 <html>
 
+<!--Creaters header with the requirerd libraries-->
 <head>
   <title>Weather station</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
@@ -17,7 +20,7 @@
 
 <body>
 
-
+  <!--Create  the navbar at the top of the page. which also ajusts on mobile-->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Weather station</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -25,6 +28,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!--At the collapable list of links-->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <a class="nav-link" href="index.html">Home</a>
@@ -36,7 +40,9 @@
     </div>
   </nav>
 
+  <!--Creates the main container for the pages. this makes the page responsive for mobile-->
   <div class="container">
+    <!--Creates buttons to switch betweens diffe5ent charts-->
     <nav>
       <div class="nav nav-tabs" id="nav-tab" role="tablist">
         <a class="nav-item nav-link active" id="nav-temperature-tab" data-toggle="tab"
@@ -45,6 +51,8 @@
         <a class="nav-item nav-link" id="nav-pressure-tab" data-toggle="tab" href="#nav-pressure">Pressure</a>
       </div>
 
+
+    <!--Create the 3 different tabs to store the 3 charts which uses the canvas tags-->
     </nav>
     <div class="tab-content" id="nav-tabContent">
       <div class="tab-pane fade show active" id="nav-temperature">
@@ -58,6 +66,7 @@
       </div>
     </div>
 
+    <!--Creates the 3 buttons the switch between the different  time periods-->
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
       <label class="btn btn-secondary active">
         <input type="radio" id="buttonHour"> Hour
@@ -73,7 +82,7 @@
   </div>
 
   <script>
-    var color = Chart.helpers.color;
+    //Creates an empty template of the config which all  the charts uses
     var config = {
       type: 'line',
       options: {
@@ -105,18 +114,22 @@
         }
       }
     };
+    //Change specefic data in the config
     var configTemperature = JSON.parse(JSON.stringify(config));
     configTemperature.options.title.text = 'Temperature (' + String.fromCharCode(8451) + ')';
     configTemperature.options.scales.yAxes[0].scaleLabel.labelString = 'Temperature (' + String.fromCharCode(8451) + ')';
 
+    //Change specefic data in the config
     var configLight = JSON.parse(JSON.stringify(config));
     configLight.options.title.text = 'Light (%)';
     configLight.options.scales.yAxes[0].scaleLabel.labelString = 'Light (lx)';
 
+    //Change specefic data in the config
     var configPressure = JSON.parse(JSON.stringify(config));
     configPressure.options.title.text = 'Pressure (Pa)';
     configPressure.options.scales.yAxes[0].scaleLabel.labelString = 'Pressure (Pa)';
 
+    //link the charts with it's own  config when the page has loaded all the elements
     window.onload = function () {
       var ctxTemperature = document.getElementById('chartTemperature').getContext('2d');
       window.lineTemperature = new Chart(ctxTemperature, configTemperature);
@@ -128,6 +141,7 @@
       window.linePressure = new Chart(ctxPressure, configPressure);
     };
 
+    //Store the colors for each differnt line
     let colors = [
       'rgb(255, 99, 132',
       'rgb(255, 159, 64)',
@@ -136,58 +150,71 @@
       'rgb(54, 162, 235)',
       'rgb(201, 203, 207)'];
 
-    $.get("http://192.168.1.133/data_graph", function (dataJSON) {
+    //request the last 10 entries for each weather station
+    $.get("http://daanbouwman.nl/data_graph", function (dataJSON) {
       let data = JSON.parse(dataJSON);
       console.log(data);
+      //update the charts
       updateData(data);
     });
 
+    //adds the functions to the button
     buttonDay = document.getElementById('buttonDay');
     buttonDay.onclick = function () {
-      $.get("http://192.168.1.133/data_graph_day", function (dataJSON) {
+      $.get("http://daanbouwman.nl/data_graph_day", function (dataJSON) {
 
+        //empty each charts when the button is pressed
         configTemperature.data.datasets = [];
         configLight.data.datasets = [];
         configPressure.data.datasets = [];
         let data = JSON.parse(dataJSON);
         console.log(data);
+        //update the charts
         updateData(data);
         console.log(configTemperature);
       });
     };
 
+      //adds the functions to the button
     buttonHour = document.getElementById('buttonHour');
     buttonHour.onclick = function () {
-      $.get("http://192.168.1.133/data_graph_hour", function (dataJSON) {
+      $.get("http://daanbouwman.nl/data_graph_hour", function (dataJSON) {
 
+        //empty each charts when the button is pressed
         configTemperature.data.datasets = [];
         configLight.data.datasets = [];
         configPressure.data.datasets = [];
         let data = JSON.parse(dataJSON);
         console.log(data);
+        //update the charts
         updateData(data);
         console.log(configTemperature);
       });
     };
 
+    //adds the functions to the button
     buttonWeek = document.getElementById('buttonWeek');
     buttonWeek.onclick = function () {
-      $.get("http://192.168.1.133/data_graph_week", function (dataJSON) {
+      $.get("http://daanbouwman.nl/data_graph_week", function (dataJSON) {
+        //empty each charts when the button is pressed
         configTemperature.data.datasets = [];
         configLight.data.datasets = [];
         configPressure.data.datasets = [];
         let data = JSON.parse(dataJSON);
         console.log(data);
+        //update the charts
         updateData(data);
         console.log(configTemperature);
       });
     };
 
-
+    //function to update all the charts
     function updateData(data) {
 
+      //loop trougth all the differnt stations
       for (let i = 0; i < data.length; i++) {
 
+        //adds the info of the weather stations to the chart
         configTemperature.data.datasets.push({
           label: data[i].location,
           cubicInterpolationMode: 'monotone',
@@ -198,6 +225,7 @@
         });
         window.lineTemperature.update();
 
+        //adds the info of the weather stations to the chart
         configLight.data.datasets.push({
           label: data[i].location,
           cubicInterpolationMode: 'monotone',
@@ -208,6 +236,7 @@
         });
         window.lineLight.update();
 
+        //adds the info of the weather stations to the chart
         configPressure.data.datasets.push({
           label: data[i].location,
           cubicInterpolationMode: 'monotone',
@@ -218,18 +247,22 @@
         });
         window.linePressure.update();
 
+        //loop trougth the reading entries of the weather stations
         for (let j = 0; j < data[i][0].length; j++) {
 
+          //push the data to the chart
           configTemperature.data.datasets[i].data.push({
             x: moment(data[i][0][j].time, "YYY-MM-DD hh:mm:ss"),
             y: data[i][0][j].temperature
           });
 
+          //push the data to the chart
           configLight.data.datasets[i].data.push({
             x: moment(data[i][0][j].time, "YYY-MM-DD hh:mm:ss"),
             y: data[i][0][j].ambient_light
           });
 
+          //push the data to the chart
           configPressure.data.datasets[i].data.push({
             x: moment(data[i][0][j].time, "YYY-MM-DD hh:mm:ss"),
             y: data[i][0][j].barometric_pressure
@@ -237,6 +270,7 @@
 
         }
 
+        //update all the charts
         window.linePressure.update();
         window.lineTemperature.update();
         window.lineLight.update();
