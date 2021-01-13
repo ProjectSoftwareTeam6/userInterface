@@ -72,10 +72,10 @@
         <input type="radio" id="buttonHour"> Hour
       </label>
       <label class="btn btn-secondary">
-        <input type="radio" id="buttonDay"> Day
+        <input type="radio" id="button3Hours"> 3 Hours
       </label>
       <label class="btn btn-secondary">
-        <input type="radio" id="buttonWeek"> Week
+        <input type="radio" id="buttonDay"> Day
       </label>
     </div>
 
@@ -193,9 +193,9 @@
     };
 
     //adds the functions to the button
-    buttonWeek = document.getElementById('buttonWeek');
+    buttonWeek = document.getElementById('button3Hours');
     buttonWeek.onclick = function () {
-      $.get("/data_graph_week", function (dataJSON) {
+      $.get("/data_graph_3hours", function (dataJSON) {
         //empty each charts when the button is pressed
         configTemperature.data.datasets = [];
         configLight.data.datasets = [];
