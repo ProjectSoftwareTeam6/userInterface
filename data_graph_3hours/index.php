@@ -20,8 +20,15 @@ while ($row = $stations->fetchArray(1)) {
 
     //create another array to store the readings and store it  in an array
     $data = array();
+    $i = 0;
     while ($result = $station->fetchArray(1)) {
-        $data[] =  $result;
+        //reduce the number of entries in the array to prevent clutter in the chart
+        if($i == 1){
+            $data[] =  $result;
+            $i = 0;
+        }else{
+        $i++;
+        }
     }
     //add all the readings to the specific weather stations
     $row[] = $data;
