@@ -23,7 +23,7 @@ while ($row = $stations->fetchArray(1)) {
     $i = 0;
     while ($result = $station->fetchArray(1)) {
         //reduce the number of entries in the array to prevent clutter in the chart
-        if($i == 3){
+        if($i == 6){
             $data[] =  $result;
             $i = 0;
         }
