@@ -11,7 +11,7 @@ while ($row = $stations->fetchArray(1)) {
        
     //request the last 10 entries from the weather stations from readinigs list
     //this is the prepare statement and doesn't directly send the request. and :id is an variable which has te be assigned
-    $statement = $db->prepare("SELECT temperature, ambient_light, barometric_pressure, time FROM Readings where node_id = :id and time >= date('now', '-3 hours') and 'time'< date('now') order by time desc");
+    $statement = $db->prepare("SELECT temperature, ambient_light, barometric_pressure, time FROM Readings where node_id = :id and time >= datetime('now', 'localtime', '-3 hour') order by time desc");
      //assign :id
     $statement->bindValue(':id', $row['node_id']);
     $statement->bindValue(':id', $row['node_id']);
