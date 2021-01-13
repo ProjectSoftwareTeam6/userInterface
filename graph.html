@@ -151,7 +151,7 @@
       'rgb(201, 203, 207)'];
 
     //request the last 10 entries for each weather station
-    $.get("/data_graph", function (dataJSON) {
+    $.get("/data_graph_day", function (dataJSON) {
       let data = JSON.parse(dataJSON);
       console.log(data);
       //update the charts
