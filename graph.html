@@ -151,7 +151,7 @@
       'rgb(201, 203, 207)'];
 
     //request the last 10 entries for each weather station
-    $.get("http://daanbouwman.nl/data_graph", function (dataJSON) {
+    $.get("/data_graph", function (dataJSON) {
       let data = JSON.parse(dataJSON);
       console.log(data);
       //update the charts
@@ -161,7 +161,7 @@
     //adds the functions to the button
     buttonDay = document.getElementById('buttonDay');
     buttonDay.onclick = function () {
-      $.get("http://daanbouwman.nl/data_graph_day", function (dataJSON) {
+      $.get("/data_graph_day", function (dataJSON) {
 
         //empty each charts when the button is pressed
         configTemperature.data.datasets = [];
@@ -178,7 +178,7 @@
       //adds the functions to the button
     buttonHour = document.getElementById('buttonHour');
     buttonHour.onclick = function () {
-      $.get("http://daanbouwman.nl/data_graph_hour", function (dataJSON) {
+      $.get("/data_graph_hour", function (dataJSON) {
 
         //empty each charts when the button is pressed
         configTemperature.data.datasets = [];
@@ -195,7 +195,7 @@
     //adds the functions to the button
     buttonWeek = document.getElementById('buttonWeek');
     buttonWeek.onclick = function () {
-      $.get("http://daanbouwman.nl/data_graph_week", function (dataJSON) {
+      $.get("/data_graph_week", function (dataJSON) {
         //empty each charts when the button is pressed
         configTemperature.data.datasets = [];
         configLight.data.datasets = [];
@@ -218,7 +218,6 @@
         configTemperature.data.datasets.push({
           label: data[i].location,
           cubicInterpolationMode: 'monotone',
-          backgroundColor: color(colors[i]).alpha(0.5).rgbString(),
           borderColor: colors[i],
           fill: false,
           data: []
@@ -229,7 +228,6 @@
         configLight.data.datasets.push({
           label: data[i].location,
           cubicInterpolationMode: 'monotone',
-          backgroundColor: color(colors[i]).alpha(0.5).rgbString(),
           borderColor: colors[i],
           fill: false,
           data: []
@@ -240,7 +238,6 @@
         configPressure.data.datasets.push({
           label: data[i].location,
           cubicInterpolationMode: 'monotone',
-          backgroundColor: color(colors[i]).alpha(0.5).rgbString(),
           borderColor: colors[i],
           fill: false,
           data: []

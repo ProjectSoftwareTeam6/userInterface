@@ -46,7 +46,7 @@
 
   <script>
     //Request the data from the database which is returns in json format
-    $.get("http://daanbouwman.nl/data", function (data) {
+    $.get("/data", function (data) {
       //store the json file as an  object
       var obj = JSON.parse(data);
       console.log(obj);
